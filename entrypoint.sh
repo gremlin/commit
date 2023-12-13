@@ -1,5 +1,11 @@
 #!/bin/sh
 
+if [[ -z "${INPUT_PUSH_USER+x}" ]]; then
+  AUTH_USER=${GITHUB_ACTOR}
+else
+  AUTH_USER=${INPUT_PUSH_USER}
+fi
+
 git config --global --add safe.directory /github/workspace
 if case $INPUT_DIRECTORY in "/"*) ;; *) false;; esac; then
   git config --global --add safe.directory "$INPUT_DIRECTORY"
@@ -20,11 +26,11 @@ if [ "$INPUT_FORCE" != "0" ]; then
 fi
 
 echo "machine github.com" > "$HOME/.netrc"
-echo "  login $GITHUB_ACTOR" >> "$HOME/.netrc"
+echo "  login $AUTH_USER" >> "$HOME/.netrc"
 echo "  password $INPUT_TOKEN" >> "$HOME/.netrc"
 
 echo "machine api.github.com" >> "$HOME/.netrc"
-echo "  login $GITHUB_ACTOR" >> "$HOME/.netrc"
+echo "  login $AUTH_USER" >> "$HOME/.netrc"
 echo "  password $INPUT_TOKEN" >> "$HOME/.netrc"
 
 git config user.email "$INPUT_EMAIL"

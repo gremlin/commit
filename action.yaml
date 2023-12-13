@@ -28,6 +28,10 @@ inputs:
     description: The repository to push the code to, defaults to origin (e.g. this repository)
     required: true
     default: origin
+  auth-user:
+    description: The user to authenticate as
+    required: false
+    default: ""
   token:
     description: The token used to push the code, not needed if you push to the same repository
     required: true
